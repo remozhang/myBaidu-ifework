@@ -14,6 +14,8 @@ function isFunction(fn) {
 	return object.prototype.toString.call(fn)==="[object Function"
 }
 
+——————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
+
 // task2.2(不行)
 // 使用递归来实现一个深度克隆，可以复制一个目标对象，返回一个完整拷贝
 // 被复制的对象类型会被限制为数字、字符串、布尔、日期、数组、Object对象。不会包含函数、正则对象等
@@ -72,6 +74,7 @@ console.log(abObj.b.b1[0]);
 console.log(tarObj.a);      // 1
 console.log(tarObj.b.b1[0]);    // "hello"
 
+——————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
 // task2.3
 // 对数组进行去重操作，只考虑数组中元素为数字或字符串，返回一个去重后的数组
 // 先对数组进行排序，然后从后开始与前一个进行比较，一样就删除
@@ -90,11 +93,43 @@ var a = [1, 3, 5, 7, 5, 3];
 var b = uniqArray(a);
 console.log(b); //[1, 3, 5, 7]
 
+// hash
+// 利用对象同名属性只能有一个的特性
+function uniqArray2(arr) {
+    var obj = {};
+    var result = [];
+    for (var i = 0; i < arr.length; i++) {
+        if (!obj[arr[i]]) {
+            result.push(arr[i]);
+            obj[arr[i]] = true;
+        }
+    }
+    return result;
+}
 
+// hash +es5
+//速度最快 
+function uniqArray3(arr) {
+    var obj = {};
+    for (var i = 0; i < arr.length; i++) {
+        obj[arr[i]] = true;
+    }
+    return Object.keys(obj)//??
+}
+// 返回["1","3","5","7"]
 
+// 利用索引indexOf找不到等于-1的特性去掉重复的
+function uniqArray3(arr) {
+    var new_array = [];
+    for (var i = 0, len = arr.length; i< len; i++) {
+        if (arr[i] !== "" && new_array.indexOf(arr[i]) < 0 ) {
+            new_array.push(arr[i]);
+        }
+    }
+    return new_array
+}
 
-
-
+——————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
 
 // 实现一个简单的trim函数，用于去除一个字符串，头部和尾部的空白字符
 // 假定空白字符只有半角空格、Tab
