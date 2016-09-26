@@ -114,7 +114,7 @@ function uniqArray3(arr) {
     for (var i = 0; i < arr.length; i++) {
         obj[arr[i]] = true;
     }
-    return Object.keys(obj)//??
+    return Object.keys(obj)//??返回参数obj可被枚举的属性
 }
 // 返回["1","3","5","7"]
 
