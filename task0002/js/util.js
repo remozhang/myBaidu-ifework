@@ -135,23 +135,54 @@ function uniqArray3(arr) {
 // 假定空白字符只有半角空格、Tab
 // 练习通过循环，以及字符串的一些基本方法，分别扫描字符串str头部和尾部是否有连续的空白字符，并且删掉他们，最后返回一个完成去除的字符串
 function simpleTrim(str) {
+    function isEmpty(c) {
+        return /\s/.test(c);
+    }
 
+    var len = str.length;
+    for (var i = 0; i < len && isEmpty(str.charAt(i)); i++);
+    if (i === len) {
+        return '';
+    }
+    for (var j = len; j && isEmpty(str.charAt(j - 1)); j--);
+    return str.substring(i, j);
 }
 
+// 很多同学肯定对于上面的代码看不下去，接下来，我们真正实现一个trim
+// 对字符串头尾进行空格字符的去除、包括全角半角空格、Tab等，返回一个字符串
+// 尝试使用一行简洁的正则表达式完成该题目
+function trim(str) {
+    return str.replace(/^\s+|\s+$/g, '');
+}
 
+// 使用示例
+/*
+var str = '   hi!  ';
+str = trim(str);
+console.log(str); // 'hi!'
+*/
 
-充分熟悉apply用法
-function Person(name,age) {   
-    this.name=name; this.age=age;   
-}   
- /*定义一个学生类*/   
-function Student(name,age,grade) {   
-    Person.apply(this,arguments); this.grade=grade;   
-}   
-//创建一个学生类   
-var student=new Student("qian",21,"一年级");   
-//测试   
-alert("name:"+student.name+"\n"+"age:"+student.age+"\n"+"grade:"+student.grade);   
-//大家可以看到测试结果name:qian age:21 grade:一年级   
-//学生类里面我没有给name和age属性赋值啊,为什么又存在这两个属性的值呢,这个就是apply的神奇之处.   
+// 实现一个遍历数组的方法，针对数组中每一个元素执行fn函数，并将数组索引和元素作为参数传递
+function each(arr, fn) {
+    for (var i = 0, len = arr.length; i < len; i++) {
+        fn(arr[i], i);
+    }
+}
 
+// 其中fn函数可以接受两个参数：item和index
+
+// 使用示例
+/*
+var arr = ['java', 'c', 'php', 'html'];
+function output(item) {
+    console.log(item)
+}
+each(arr, output);  // java, c, php, html
+
+// 使用示例
+var arr = ['java', 'c', 'php', 'html'];
+function output(item, index) {
+    console.log(index + ': ' + item)
+}
+each(arr, output);  // 0:java, 1:c, 2:php, 3:html
+*/
