@@ -229,56 +229,56 @@ function isMobilePhone(phone) {
 }
 
 ——————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
-// task 3.1
-function hasClass(element, className) {
-    var name = element.className.match(/\S+/g) || [];
-    if (name.indexOf(className) !== -1) {
-        return true;
-    }
-    return false;
+// // task 3.1??
+// function hasClass(element, className) {
+//     var name = element.className.match(/\S+/g) || [];
+//     if (name.indexOf(className) !== -1) {
+//         return true;
+//     }
+//     return false;
 
-}
-// 为element增加一个样式名为newClassName的新样式
-function addClass(element, newClassName) {
-    if (!hasClass(element, newClassName)) {
-        element.className = trim(element.className + ' ' + newClassName);
-    }
-}
+// }
+// // 为element增加一个样式名为newClassName的新样式
+// function addClass(element, newClassName) {
+//     if (!hasClass(element, newClassName)) {
+//         element.className = trim(element.className + ' ' + newClassName);
+//     }
+// }
 
-// 移除element中的样式oldClassName
-function removeClass(element, oldClassName) {
-    if (hasClass(element, oldClassName)) {
-        element.className = trim(element.className.replace(oldClassName, ''));
-    }
-}
+// // 移除element中的样式oldClassName
+// function removeClass(element, oldClassName) {
+//     if (hasClass(element, oldClassName)) {
+//         element.className = trim(element.className.replace(oldClassName, ''));
+//     }
+// }
 
-// 判断siblingNode和element是否为同一个父元素下的同一级的元素，返回bool值
-function isSiblingNode(element, siblingNode) {
-    return element.parentNode === siblingNode.parentNode;
-}
+// // 判断siblingNode和element是否为同一个父元素下的同一级的元素，返回bool值
+// function isSiblingNode(element, siblingNode) {
+//     return element.parentNode === siblingNode.parentNode;
+// }
 
-// 获取element相对于浏览器窗口的位置，返回一个对象{x, y}
-function getPosition(element) {
-    var x = 0;
-    var y = 0;
-    var current = element;
+// // 获取element相对于浏览器窗口的位置，返回一个对象{x, y}
+// function getPosition(element) {
+//     var x = 0;
+//     var y = 0;
+//     var current = element;
 
-    while (current !== null) {
-        x += current.offsetLeft;
-        y += current.offsetTop;
-        current = current.offsetParent;
-    }
+//     while (current !== null) {
+//         x += current.offsetLeft;
+//         y += current.offsetTop;
+//         current = current.offsetParent;
+//     }
 
-    var scrollLeft = document.body.scrollLeft + document.documentElement.scrollLeft;
-    var scrollTop = document.body.scrollTop + document.documentElement.scrollTop;
+//     var scrollLeft = document.body.scrollLeft + document.documentElement.scrollLeft;
+//     var scrollTop = document.body.scrollTop + document.documentElement.scrollTop;
 
-    // element.getBoundingClientRect()
+//     // element.getBoundingClientRect()
 
-    x -= scrollLeft;
-    y -= scrollTop;
+//     x -= scrollLeft;
+//     y -= scrollTop;
 
-    return {
-        x: x,
-        y: y
-    }
-}
+//     return {
+//         x: x,
+//         y: y
+//     }
+// }
