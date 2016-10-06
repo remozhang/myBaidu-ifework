@@ -229,7 +229,7 @@ function isMobilePhone(phone) {
 }
 
 ——————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
-/*// task 3.1??
+// task 3.1??
 function hasClass(element, className) {
     var name = element.className.match(/\S+/g) || [];
     if (name.indexOf(className) !== -1) {
@@ -282,4 +282,3 @@ function getPosition(element) {
         y: y
     }
 }
-*/
