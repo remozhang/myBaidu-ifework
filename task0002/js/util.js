@@ -364,7 +364,7 @@ function addEvent(element, event, listener) {
     element.addEventListener(event,listener);
 }
 
-// 例如：
+// 例如：ge
 function clicklistener(event) {
     ...
 }
@@ -372,16 +372,82 @@ addEvent($("#doma"), "click", a);
 
 // 移除element对象对于event事件发生时执行listener的响应
 function removeEvent(element, event, listener) {
-    // your implement
+    // your implementhangu
     element.removeEventListener(event,Listener)
 }
 
 // 实现对click事件的绑定
 function addClickEvent(element, listener) {
     // your implement
+    addEvent(element,'click',listener);
 }
 
 // 实现对于按Enter键时的事件绑定
 function addEnterEvent(element, listener) {
     // your implement
+    addEvent(element,"keydown",function(e) {
+        var event = e || window.event;
+        var keyCode = event.which || event.keyCode;
+        if (keyCode === 13) {
+            listener.call(element,event);
+        }
+    });
 }
+
+// 接下来我们把上面几个函数和$做一下结合，把他们变成$对象的一些方法
+$.on = addEvent;
+$.un = removeEvent;
+$.click = addClickEvent;
+$.enter = addEnterEvent;
+
+// task 4.2
+// 对一个列表里所有的<li>增加点击事件的监听
+function clickListener(event) {
+    console.log(event);
+}
+
+/*
+$.click($("#item1"), clickListener);
+$.click($("#item2"), clickListener);
+$.click($("#item3"), clickListener);
+*/
+
+// 我们通过自己写的函数，取到id为list这个ul里面的所有li，然后通过遍历给他们绑定事件。这样我们就不需要一个一个去绑定了。
+function clickListener(event) {
+    console.log(event);
+}
+
+function renderList() {
+    $("#list").innerHTML = '<li>new item</li>';
+}
+
+function init() {
+    /*
+    each($("#list").getElementsByTagName('li'), function(item) {
+        $.click(item, clickListener);
+    });
+    */
+
+    $.click($("#btn"), renderList);
+}
+
+// 我们增加了一个按钮，当点击按钮时，改变list里面的项目，这个时候你再点击一下li，绑定事件不再生效了。
+// 那是不是我们每次改变了DOM结构或者内容后，都需要重新绑定事件呢？当然不会这么笨，接下来学习一下事件代理，然后实现下面新的方法。
+function delegateEvent(element, tag, eventName, listener) {
+    addEvent(element, eventName, function (e) {
+        var event = e || window.event;
+        var target = event.target || event.srcElement;
+
+        if (target && target.tagName === tag.toUpperCase()) {
+            listener.call(target, event);
+        }
+    });
+}
+
+$.delegate = delegateEvent;
+
+// 使用示例
+// 还是上面那段HTML，实现对list这个ul里面所有li的click事件进行响应
+/*
+$.delegate($("#list"), "li", "click", clickListener);
+*/
