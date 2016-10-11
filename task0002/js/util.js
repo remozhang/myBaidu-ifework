@@ -400,7 +400,9 @@ $.un = removeEvent;
 $.click = addClickEvent;
 $.enter = addEnterEvent;
 
-// task 4.2
+
+
+// task 4.2??
 // 对一个列表里所有的<li>增加点击事件的监听
 function clickListener(event) {
     console.log(event);
@@ -451,3 +453,161 @@ $.delegate = delegateEvent;
 /*
 $.delegate($("#list"), "li", "click", clickListener);
 */
+
+——————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
+// task 5.1??
+// 判断是否为IE浏览器，返回-1或者版本号
+function isIE() {
+    /*
+    var ua = navigator.userAgent.toLowerCase();
+    var ie = ua.match(/rv:([\d.]+)/) || ua.match(/msie ([\d.]+)/);
+    if(ie) {
+        return ie[1];
+    }
+    else {
+        return -1;
+    }
+    */
+    return /msie (\d+\.\d+)/i.test(navigator.userAgent)
+        ? (document.documentMode || + RegExp['\x241']) : -1;
+}
+
+
+// 设置cookie
+function isValidCookieName(cookieName) {
+    // http://www.w3.org/Protocols/rfc2109/rfc2109
+    // Syntax:  General
+    // The two state management headers, Set-Cookie and Cookie, have common
+    // syntactic properties involving attribute-value pairs.  The following
+    // grammar uses the notation, and tokens DIGIT (decimal digits) and
+    // token (informally, a sequence of non-special, non-white space
+    // characters) from the HTTP/1.1 specification [RFC 2068] to describe
+    // their syntax.
+    // av-pairs   = av-pair *(";" av-pair)
+    // av-pair    = attr ["=" value] ; optional value
+    // attr       = token
+    // value      = word
+    // word       = token | quoted-string
+
+    // http://www.ietf.org/rfc/rfc2068.txt
+    // token      = 1*<any CHAR except CTLs or tspecials>
+    // CHAR       = <any US-ASCII character (octets 0 - 127)>
+    // CTL        = <any US-ASCII control character
+    //              (octets 0 - 31) and DEL (127)>
+    // tspecials  = "(" | ")" | "<" | ">" | "@"
+    //              | "," | ";" | ":" | "\" | <">
+    //              | "/" | "[" | "]" | "?" | "="
+    //              | "{" | "}" | SP | HT
+    // SP         = <US-ASCII SP, space (32)>
+    // HT         = <US-ASCII HT, horizontal-tab (9)>
+
+    return (new RegExp('^[^\\x00-\\x20\\x7f\\(\\)<>@,;:\\\\\\\"\\[\\]\\?=\\{\\}\\/\\u0080-\\uffff]+\x24'))
+        .test(cookieName);
+}
+
+function setCookie(cookieName, cookieValue, expiredays) {
+    if (!isValidCookieName(cookieName)) {
+        return;
+    }
+
+    var exdate = '';
+    if (expiredays) {
+        exdate = new Date();
+        exdate.setDate(exdate.getDate() + expiredays);
+        var expires = ';expires=' + exdate.toUTCString();     // toGMTString is deprecated and should no longer be used, it's only there for backwards compatibility, use toUTCString() instead
+    }
+    document.cookie = cookieName + '=' + encodeURIComponent(cookieValue) + expires;    // 废弃的 escape() 方法生成新的由十六进制转移序列替换的字符串. 使用 encodeURI 或 encodeURIComponent 代替
+}
+
+// 获取cookie值
+function getCookie(cookieName) {
+    if (!isValidCookieName(cookieName)) {
+        return null;
+    }
+
+    var re = new RegExp(cookieName + '=(.*?)($|;)');
+    return re.exec(document.cookie)[1] || null;
+}
+
+——————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
+
+// task 6.1
+// 学习Ajax，并尝试自己封装一个Ajax方法。
+function ajax(url, options) {
+    // 创建对象
+    var xmlhttp;
+    if (window.XMLHttpRequest) {
+        xmlhttp = new XMLHttpRequest();
+    }
+    else {        //兼容 IE5 IE6
+        xmlhttp = new ActiveXObject('Microsoft.XMLHTTP');
+    }
+
+    // 处理data
+    if (options.data) {
+        var dataarr = [];
+        for (var item in options.data) {
+            dataarr.push(item + '=' + encodeURI(options.data[item]));
+        }
+        var data = dataarr.join('&');
+    }
+
+    // 处理type
+    if (!options.type) {
+        options.type = 'GET';
+    }
+    options.type = options.type.toUpperCase();
+
+    // 发送请求
+    if (options.type === 'GET') {
+        var myURL = '';
+        if (options.data) {
+            myURL = url + '?' + data;
+        }
+        else {
+            myURL = url;
+        }
+        xmlhttp.open('GET', myURL, true);
+        xmlhttp.send();
+    }
+    else if (options.type === 'POST') {
+        xmlhttp.open('POST', url, true);
+        xmlhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+        xmlhttp.send(data);
+    }
+
+    // readyState
+    xmlhttp.onreadystatechange = function () {
+        if (xmlhttp.readyState === 4) {
+            if (xmlhttp.status === 200) {
+                if (options.onsuccess) {
+                    options.onsuccess(xmlhttp.responseText, xmlhttp.responseXML);
+                }
+            }
+            else {
+                if (options.onfail) {
+                    options.onfail();
+                }
+            }
+        }
+    }
+}
+
+// 使用示例：
+/*
+ajax(
+    'prompt.php',
+    {
+        data: {
+            q: 'a'
+        },
+        onsuccess: function (responseText, xhr) {
+            console.log(responseText);
+        },
+        onfail : function () {
+            console.log('fail');
+        }
+    }
+);
+*/
+
